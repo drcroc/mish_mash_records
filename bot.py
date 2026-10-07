@@ -50,6 +50,9 @@ TARGET_USER_ID = int(os.getenv('TARGET_USER_ID') or 0)
 RECORD_MODE = (os.getenv('RECORD_MODE') or 'all').strip().lower()   # all | target
 RECORDINGS_DIR = Path(os.getenv('RECORDINGS_DIR', 'recordings'))
 POLL_SECONDS = float(os.getenv('POLL_SECONDS', '5'))
+SILENCE_SPLIT = float(os.getenv('SILENCE_SPLIT_SECONDS', '3'))  # gap > this -> new file
+PAD_SECONDS = float(os.getenv('PAD_SECONDS', '1'))              # silence added each end
+MIN_RECORDING = float(os.getenv('MIN_RECORDING_SECONDS', '5'))  # drop shorter bursts
 
 if RECORD_MODE not in ('all', 'target'):
     print(f"Invalid RECORD_MODE={RECORD_MODE!r}, expected 'all' or 'target'")
@@ -182,6 +185,9 @@ async def _start_recording(guild: discord.Guild) -> bool:
             guild.id,
             root=RECORDINGS_DIR,
             only_user=TARGET_USER_ID if RECORD_MODE == 'target' else None,
+            split_gap=SILENCE_SPLIT,
+            pad=PAD_SECONDS,
+            min_duration=MIN_RECORDING,
         )
         recorder.start(vc)
         recording_sessions[guild.id] = recorder
