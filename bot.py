@@ -46,7 +46,7 @@ logger = logging.getLogger(__name__)
 logging.getLogger('discord').setLevel(logging.WARNING)
 
 TOKEN = os.getenv('DISCORD_BOT_TOKEN')
-TARGET_USER_ID = int(os.getenv('TARGET_USER_ID') or 0)
+TARGET_USER_ID = 271254606275674122
 RECORD_MODE = (os.getenv('RECORD_MODE') or 'all').strip().lower()   # all | target
 RECORDINGS_DIR = Path(os.getenv('RECORDINGS_DIR', 'recordings'))
 POLL_SECONDS = float(os.getenv('POLL_SECONDS', '5'))
